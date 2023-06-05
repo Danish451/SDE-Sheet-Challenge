@@ -1,0 +1,43 @@
+/*
+The idea here is to use binary search and move left and right using the below observation.
+
+If mid is even, and arr[mid] == arr[mid + 1], then size of subarray [0...mid-1] (left side) is even (since the every element occurs twice), so left side does not contain the single occurrence element. Hence we need to check in [mid + 1, ..., N] subarray (right side of mid). Else we need to search for the required element on the left side.
+Example:
+ [1, 1, 2, 2, 3(mid), 3, 5, 7, 7]
+Here mid = 4.  Here subarray[0…3] doesn’t contain our unique number. So we need to check in the right side of the mid i.e. subarray [5… 8].
+If mid is odd, and arr[mid] == arr[mid - 1], then the size of subarray [0...mid - 2] (left side) is even (since every element occurs twice), so the left side does not contain the single occurrence element. Hence we need to check in subarray [mid + 1, ..., N] (right side of mid). Else we need to search for the required element on the left side.
+Example 
+[1, 1, 2, 2, 3, 3(mid), 5, 7, 7]
+Here mid = 5.  Here subarray[0…3] doesn’t contain our unique number. So we need to check in the right side of mid i.e. subarray [6… 8].
+ 
+
+Algorithm:
+
+Declare three variables ‘low’, ‘high’, and ‘mid’ to use binary search and initialize ‘low’ with zero and ‘high’ with ‘n – 1’. Here ‘n’ is the length of the given array.
+Run a loop until low<high.
+Calculate ‘mid’ as mid = (low + high)/2
+If ‘mid’ is odd and ‘arr[mid]’ equals to ‘arr[mid - 1]’ or If mid is even and ‘arr[mid]’ equals to ‘arr[mid + 1]’  then do ‘low’ = ‘mid’ + 1 i.e. move right side.
+Else do high = mid i.e. move left side.
+Return ‘arr[low]’.
+Time Complexity
+O(log(N)), where ‘N’ is the total number of elements in the given array.
+
+ 
+*/
+int singleNonDuplicate(vector<int>& arr)
+{
+	// Write your code here
+   int beg = 0;
+   int end = arr.size() - 2;
+   
+   while(beg <= end){
+       int mid = (beg + end) >> 1;
+       
+       if(arr[mid] == arr[mid ^ 1])
+           beg = mid + 1;
+       else 
+           end = mid - 1;
+   }
+   
+   return arr[beg];
+}
